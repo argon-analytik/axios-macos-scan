@@ -12,7 +12,7 @@ Markdown report, and prints a short terminal verdict.
 Options:
   --scan-root PATH     Add a filesystem root to scan. Repeatable.
                        Default: all existing roots among
-                       ~/GitHub, ~/Projects, ~/Code, ~/Developer, ~/Documents;
+                       ~/GitHub, ~/Projects, ~/Code, ~/Developer;
                        falls back to HOME if none exist.
   --output-dir PATH    Directory for the generated Markdown report.
                        Default: current working directory.
@@ -45,7 +45,6 @@ discover_default_scan_roots() {
     "$HOME/Projects"
     "$HOME/Code"
     "$HOME/Developer"
-    "$HOME/Documents"
   )
   local root
 

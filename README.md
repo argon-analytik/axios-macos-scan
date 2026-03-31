@@ -86,7 +86,6 @@ Default scan roots are all existing directories among:
 - `~/Projects`
 - `~/Code`
 - `~/Developer`
-- `~/Documents`
 
 If none of those exist, it falls back to `HOME`.
 
@@ -96,7 +95,7 @@ Important:
 
 Examples:
 - if your repository has a different name but lives under `~/GitHub`, it is still scanned
-- if your repository lives under `~/Documents`, it is scanned because `~/Documents` is one of the default roots on most Macs
+- if your repository lives under one of the default roots such as `~/Projects` or `~/Developer`, it is scanned automatically
 - if your repository lives somewhere else, such as `~/Work/client-x`, it is **not** scanned automatically
 - in that case, you should add it explicitly with `--scan-root ~/Work/client-x`
 
