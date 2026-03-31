@@ -96,12 +96,18 @@ Important:
 Examples:
 - if your repository has a different name but lives under `~/GitHub`, it is still scanned
 - if your repository lives under one of the default roots such as `~/Projects` or `~/Developer`, it is scanned automatically
-- if your repository lives somewhere else, such as `~/Work/client-x`, it is **not** scanned automatically
-- in that case, you should add it explicitly with `--scan-root ~/Work/client-x`
+- if your repository lives somewhere else under `HOME`, such as `~/Work/client-x`, it is **not** scanned automatically as long as at least one default root exists on that Mac
+- if none of the default roots exist, the script falls back to scanning all of `HOME`, which would also cover `~/Work/client-x` but is usually slower
+- if you want predictable coverage for a path such as `~/Work/client-x`, add it explicitly with `--scan-root ~/Work/client-x`
 
 Practical implication:
+- the default root list is mainly a speed optimization so the script does not scan all of `HOME` on every run
 - do not assume the default root list covers every project on your Mac
+- if your repository lives under `HOME` but outside the default roots, it is usually **not** scanned automatically
+- it is only covered by the `HOME` fallback when none of the default roots exist on that Mac
+- if your repository lives outside `HOME`, it is **not** scanned automatically
 - if you keep active workspaces outside those locations, add them explicitly with `--scan-root`
+- if you want a faster and more predictable scan, keep your main development directories in the default-root list or pass them explicitly with `--scan-root`
 
 Write the report to a chosen directory:
 
