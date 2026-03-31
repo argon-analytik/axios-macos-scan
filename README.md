@@ -90,6 +90,20 @@ Default scan roots are all existing directories among:
 
 If none of those exist, it falls back to `HOME`.
 
+Important:
+- the script does **not** care what your repository is called
+- it only cares whether the repository lives somewhere under one of the selected scan roots
+
+Examples:
+- if your repository has a different name but lives under `~/GitHub`, it is still scanned
+- if your repository lives under `~/Documents`, it is scanned because `~/Documents` is one of the default roots on most Macs
+- if your repository lives somewhere else, such as `~/Work/client-x`, it is **not** scanned automatically
+- in that case, you should add it explicitly with `--scan-root ~/Work/client-x`
+
+Practical implication:
+- do not assume the default root list covers every project on your Mac
+- if you keep active workspaces outside those locations, add them explicitly with `--scan-root`
+
 Write the report to a chosen directory:
 
 ```bash
