@@ -11,7 +11,7 @@ This toolkit is meant for practical first-response on a Mac:
 - print a short terminal verdict
 
 It is intentionally host-local only.
-It does **not** query UniFi, routers, DNS, proxies, or any external telemetry source.
+It does **not** query routers, DNS, proxies, or any external telemetry source.
 
 ## Files
 
@@ -40,9 +40,32 @@ It does **not** query UniFi, routers, DNS, proxies, or any external telemetry so
 - installed `node_modules/plain-crypto-js/package.json`
 - installed compromised Axios versions in `node_modules`, even if lockfiles or manifests are no longer present
 
+## Why this tool can still be useful even though the malware cleans up after itself
+
+This campaign includes cleanup logic designed to reduce obvious forensic traces.
+
+According to public analysis, the malicious `plain-crypto-js@4.2.1` dependency executes an obfuscated `postinstall` script, then deletes `setup.js`, removes the tampered `package.json`, and replaces it with a clean copy. That means simple checks of `node_modules/plain-crypto-js`, `npm ls`, or the current package state may look normal after execution.
+
+This scanner is therefore not based on one artifact alone.
+
+Instead, it looks for multiple residual signals that may still remain after cleanup, such as:
+
+- the primary published macOS IOC path: `/Library/Caches/com.apple.act.mond`
+- exact campaign strings and runtime indicators such as `sfrclak`, `142.11.206.73`, `6202033`, and `packages.npm.org/product0`
+- retained local traces in temp paths, shell history, npm logs, npm cache metadata, and a limited unified-log window
+- package exposure evidence in lockfiles, manifests, and installed `node_modules`
+
+A simple package-state check can miss this incident after execution because the malicious install hook attempts to erase its own obvious footprint.
+
+This does **not** defeat anti-forensic cleanup in every case.
+If the install happened only briefly, logs rotated, temp artifacts disappeared, caches were cleared, or the affected workspace was deleted, false negatives are still possible.
+
+So the tool should be understood as practical host-local triage:
+it can materially lower uncertainty and sometimes find strong indicators, but it does not replace full forensics or external telemetry.
+
 ## What It Does Not Do
 
-- no router / firewall / DNS / proxy / UniFi checks
+- no router / firewall / DNS / proxy checks
 - no Time Machine or backup inspection unless you explicitly include those paths as scan roots
 - no inspection of other user accounts unless you run it with access to those homes
 - no full forensic reconstruction of deleted artifacts
@@ -179,3 +202,9 @@ The report includes:
 - The unified-log query is bounded with a timeout, because `log show` can otherwise run too long on some Macs.
 - npm cache findings are supplementary only. `_cacache` is content-addressed and not a clean forensic source.
 - For wider organizational assurance, combine this host-local scan with external telemetry such as DNS, firewall, router, or proxy logs.
+
+## References
+
+- [Datadog Security Labs — Compromised axios npm package delivers cross-platform RAT](https://securitylabs.datadoghq.com/articles/axios-npm-supply-chain-compromise/)
+- [Snyk Advisory — Embedded Malicious Code in axios](https://security.snyk.io/vuln/SNYK-JS-AXIOS-15850650)
+- [Axios GitHub issue #10604 — public incident discussion](https://github.com/axios/axios/issues/10604)
