@@ -90,7 +90,54 @@ Expected tools:
 - bounding the unified-log query with a timeout
 - truncating oversized result sections in the exported Markdown report
 
-## Usage
+## Recommended macOS download and run workflow
+
+On macOS, the most reliable way to use this script is to get it through Terminal, not through a browser download.
+
+Reason:
+- the script intentionally contains published malware IOC strings
+- a browser-downloaded copy, especially from Safari, may get a `com.apple.quarantine` attribute
+- Gatekeeper / XProtect may then block that downloaded copy even though the script is a defensive scanner
+
+### Preferred: clone the repository
+
+```bash
+git clone <this-repository-url>
+cd <repo>/scripts/axios-macos-scan
+bash ./scan.sh
+```
+
+### Lightweight alternative: download the script with `curl`
+
+```bash
+mkdir -p ~/tools/axios-macos-scan
+cd ~/tools/axios-macos-scan
+curl -fsSLO https://raw.githubusercontent.com/<owner>/<repo>/<branch>/scripts/axios-macos-scan/scan.sh
+chmod +x scan.sh
+bash ./scan.sh
+```
+
+Why these two methods are preferred:
+- Terminal-based `git clone` and `curl` downloads usually do not carry the same browser quarantine behavior as a Safari-downloaded standalone file
+- this avoids the misleading macOS warning that can appear for a browser-downloaded copy
+
+### If you already downloaded `scan.sh` in a browser and macOS blocks it
+
+The safest recommendation is:
+1. delete the browser-downloaded copy
+2. get the script again via `git clone` or `curl`
+3. run it with `bash ./scan.sh`
+
+If you intentionally want to keep the already-downloaded file, first make sure it is the exact file you expect, then remove the quarantine attribute manually:
+
+```bash
+xattr -d com.apple.quarantine ./scan.sh
+bash ./scan.sh
+```
+
+That should not be the default path for most users.
+
+## Running the script
 
 Make it executable once:
 
@@ -101,7 +148,7 @@ chmod +x ./scan.sh
 Run with default scan roots:
 
 ```bash
-./scan.sh
+bash ./scan.sh
 ```
 
 Default scan roots are all existing directories among:
@@ -135,13 +182,13 @@ Practical implication:
 Write the report to a chosen directory:
 
 ```bash
-./scan.sh --output-dir ~/Desktop
+bash ./scan.sh --output-dir ~/Desktop
 ```
 
 Scan one or more explicit roots:
 
 ```bash
-./scan.sh \
+bash ./scan.sh \
   --scan-root ~/GitHub \
   --scan-root /Volumes/Archive \
   --output-dir ~/Desktop
@@ -150,7 +197,7 @@ Scan one or more explicit roots:
 Skip the unified-log query if you want a faster run or if `log show` is too slow on a given host:
 
 ```bash
-./scan.sh --skip-unified-log
+bash ./scan.sh --skip-unified-log
 ```
 
 ## Terminal Verdicts

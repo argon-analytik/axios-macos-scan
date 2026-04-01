@@ -28,9 +28,9 @@ Exit codes:
   2  Strong host IOC found (for example payload file or exact campaign runtime/log artifact).
 
 Examples:
-  ./scan.sh
-  ./scan.sh --output-dir ~/Desktop
-  ./scan.sh --scan-root ~/GitHub --scan-root /Volumes/Archive --output-dir ~/Desktop
+  bash ./scan.sh
+  bash ./scan.sh --output-dir ~/Desktop
+  bash ./scan.sh --scan-root ~/GitHub --scan-root /Volumes/Archive --output-dir ~/Desktop
 HELP
 }
 
@@ -173,7 +173,7 @@ collect_project_files() {
   shift
 
   find "${SCAN_ROOTS[@]}" \
-    \( -type d \( -name .git -o -name node_modules -o -name .venv -o -name venv -o -name dist -o -name build -o -name .next -o -name .nuxt -o -name DerivedData -o -name Pods -o -name target -o -name .Trash -o -name Library \) -prune \) \
+    \( -type d \( -name .git -o -name node_modules -o -name .venv -o -name venv -o -name dist -o -name build -o -name .next -o -name .nuxt -o -name DerivedData -o -name Pods -o -name target -o -name .Trash -o -name Library -o -name 'axios-macos-scan-regression*' -o -name 'axios-macos-scan-test*' \) -prune \) \
     -o "$@" -print 2>/dev/null | sort -u > "$out_file" || true
 }
 
