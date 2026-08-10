@@ -1,3 +1,5 @@
+
+
 # Axios macOS Scan
 
 macOS-focused triage for the Axios / `plain-crypto-js` supply-chain incident.
@@ -198,6 +200,12 @@ Skip the unified-log query if you want a faster run or if `log show` is too slow
 
 ```bash
 bash ./scan.sh --skip-unified-log
+```
+
+Limit the number of lines kept per findings section in the exported report (default: 200):
+
+```bash
+bash ./scan.sh --max-lines 50
 ```
 
 ## Terminal Verdicts
